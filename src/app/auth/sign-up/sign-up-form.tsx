@@ -31,88 +31,26 @@ export default function SignUpForm() {
       const { userName, email } = data
 
       // パスキーがサポートされているか確認
-      const checkPasskeySupportResult = await checkPasskeySupport()
-      if (!checkPasskeySupportResult.success) {
-        console.error('checkPasskeySupportResult:', checkPasskeySupportResult)
-        setError(checkPasskeySupportResult.error)
-        return
-      }
 
       // ユーザーが既に存在するか確認(or メールアドレス確認)
-      const checkUserResult = await checkUser(email)
-      if (!checkUserResult.success) {
-        console.error('checkUserResult:', checkUserResult)
-        setError(checkUserResult.error)
-        return
-      }
 
       // オプション取得
-      const getOptionsResult = await getOptions(userName, email)
-      if (!getOptionsResult.success) {
-        console.error('getOptionsResult:', getOptionsResult)
-        setError(getOptionsResult.error)
-        return
-      }
 
       // チャレンジを保存
-      const userId = getOptionsResult.data.user.id
-      const saveChallengeResult = await saveChallenge(userId, getOptionsResult.data.challenge)
-      if (!saveChallengeResult.success) {
-        console.error('saveChallengeResult:', saveChallengeResult)
-        setError(saveChallengeResult.error)
-        return
-      }
 
       // パスキーを作成
-      const createPasskeyResult = await createPasskey(getOptionsResult.data)
-      if (!createPasskeyResult.success) {
-        console.error('createPasskeyResult:', createPasskeyResult)
-        setError(createPasskeyResult.error)
-        return
-      }
 
       // パスキーを検証
-      const verifyPasskeyResult = await verifyPasskey(userId, createPasskeyResult.data)
-      if (!verifyPasskeyResult.success) {
-        console.error('verifyPasskeyResult:', verifyPasskeyResult)
-        setError(verifyPasskeyResult.error)
-        return
-      }
 
       // ユーザーを保存
-      const saveUserResult = await saveUser(userId, userName, email)
-      if (!saveUserResult.success) {
-        console.error('saveUserResult:', saveUserResult)
-        setError(saveUserResult.error)
-        return
-      }
 
       // クレデンシャルを保存
-      const saveCredentialResult = await saveCredential(userId, verifyPasskeyResult.data)
-      if (!saveCredentialResult.success) {
-        console.error('saveCredentialResult:', saveCredentialResult)
-        setError(saveCredentialResult.error)
-        return
-      }
 
       // チャレンジをクリア
-      const clearChallengeResult = await clearChallenge(userId)
-      if (!clearChallengeResult.success) {
-        console.error('clearChallengeResult:', clearChallengeResult)
-        setError(clearChallengeResult.error)
-        return
-      }
 
       // ユーザー情報取得
-      const getUserResult = await getUser(userId)
-      if (!getUserResult.success) {
-        console.error('getUserResult:', getUserResult)
-        setError(getUserResult.error)
-        return
-      }
 
       // 登録完了
-      setUser(getUserResult.data)
       alert('登録完了🚀')
     })
   }
